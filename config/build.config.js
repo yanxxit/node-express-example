@@ -1,0 +1,1 @@
+var build ={"version":"?v=20170729102528","maxage":604800000,"name":"前端版本配置信息"};  module.exports = build;

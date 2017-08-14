@@ -1,0 +1,21 @@
+<% include header.html %>
+<style>
+    body {
+        text-align: center;
+    }
+
+    .home-h1 {
+        margin-top: 20%;
+    }
+</style>
+<body>
+<% include common.html %>
+
+<h1 class="home-h1">Hello Express!</h1>
+<p>One nodejs express template.</p>
+
+<a href="javascript:;" class="btn-alert">点击事件</a>
+</body>
+
+<% include footer.html %>
+<script type="text/javascript" src="/<%= app %>/public/home/js/myHome<%= online?'':'.min' %>.js<%= version %>"></script>

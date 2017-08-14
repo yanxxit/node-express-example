@@ -1,0 +1,14 @@
+</html>
+<% if(!online){ %>
+<script type="text/javascript" src="/<%= app %>/public/assets/js/jquery.min.js"></script>
+<script type="text/javascript" src="/<%= app %>/public/assets/js/amazeui.min.js"></script>
+<% } else { %>
+<script type="text/javascript" src="http://cdn.bootcss.com/jquery/2.1.1/jquery.min.js"></script>
+<script type="text/javascript" src="http://cdn.bootcss.com/amazeui/2.7.1/js/amazeui.min.js"></script>
+<% } %>
+
+<script type="text/javascript">
+    var w = jQuery(document).width(), h = jQuery(window).height();
+    $("#content .b_body").css("height", h);
+    var app = '<%= app %>';
+</script>

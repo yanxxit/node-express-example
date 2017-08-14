@@ -1,0 +1,64 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <meta name="renderer" content="webkit">
+    <meta name="format-detection" content="telephone=no"/>
+    <link rel="dns-prefetch" href="http://m.sh.189.cn/">
+    <link rel="dns-prefetch" href="http://cdn.amazeui.org/">
+    <link rel="dns-prefetch" href="http://cdn.bootcss.com/">
+    <link rel="dns-prefetch" href="http://dn-growing.qbox.me/">
+    <link rel="dns-prefetch" href="http://hm.baidu.com/">
+    <link rel="dns-prefetch" href="http://recv-wd.gridsumdissector.com/">
+    <link rel="dns-prefetch" href="http://res.wx.qq.com/">
+    <link rel="dns-prefetch" href="http://shcdn.iceinto.com/">
+    <link rel="dns-prefetch" href="http://static.gridsumdissector.com/">
+    <link rel="dns-prefetch" href="http://tajs.qq.com/">
+    <link rel="dns-prefetch" href="http://webstat.keysense.com.cn/">
+    <link rel="dns-prefetch" href="http://www.webdissector.com/">
+    <link rel="icon" href="http://shcdn.iceinto.com/img/ico/favicon.ico" type="image/x-icon">
+    <link rel="shortcut icon" href="http://shcdn.iceinto.com/img/ico/shortcut_favicon.ico" type="image/x-icon">
+    <title>行动派</title>
+    <script src="https://cdn.bootcss.com/vue/2.4.1/vue.min.js"></script>
+    <link href="http://cdn.amazeui.org/amazeui/2.7.2/css/amazeui.min.css" type="text/css" rel="stylesheet">
+    <link href="/<%= app %>/public/play/css/base.css" type="text/css" rel="stylesheet">
+</head>
+
+<body>
+<div id="container">
+    <div class="title">
+        心动不如行动,立即下单还能享受团购优惠
+        <span class="sp1">10人组团成功,每人都能获得一张</span>
+        <span>U掌柜白领生鲜礼包券</span>
+    </div>
+    <div class="list-name">
+        哇,好大一大波团购正向你涌来
+    </div>
+    <div class="list" v-for="m in list">
+        <span>{{m.itemid}}#团:满<span>{{m.max_count}}</span>人,距离结束{{formatTime(m.expiration_time)}}</span>
+        <a href="javascript:;" @click="addJoinRecord(m)">立即参与</a>
+    </div>
+
+
+    <div class="commander">
+        <a href="javascript:;" id="send">NO!我要当团长</a>
+    </div>
+
+    <div class="ind-sm">
+        <span class="tit">温馨提醒:</span>
+        <br/>.活动时间:2017年7月17日-2017年7月17日
+        <br/>.套餐限额总共200份
+        <br/>.组团有限期为24小时(从团长成功开团算起)
+        <br/>.如组团活动成功,优惠券将于新套餐激活后的7个中作日内分发至新办理的号码帐号中.
+    </div>
+    <input type="hidden" id="cookie" value="<%=cookie%>">
+</div>
+
+</body>
+</html>
+<script type="text/javascript" src="http://cdn.bootcss.com/jquery/2.1.1/jquery.min.js"></script>
+<script src="http://cdn.bootcss.com/moment.js/2.18.1/moment.min.js"></script>
+<!-- 引入客户端脚本 -->
+<script src="http://cdn.bootcss.com/socket.io/2.0.3/socket.io.js"></script>
