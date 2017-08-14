@@ -65,7 +65,6 @@ app.use('/', webRouter);//进入路由
 var server = app.listen(config.port, function () {
     logger.info('监听日志：' + config.port);
     logger.info("local: " + config.host + '/' + config.app + '/index');
-    logger.info('online: http://app.sh.189.cn/' + config.app + '/index');
 });
 
 // 引入socket 服务端模块。如无需即时通讯，注释即可
