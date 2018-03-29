@@ -12,5 +12,11 @@
     <br/>
     <input type="submit" value="上传文件"/>
 </form>
+
+<form action="/express/upload2" method="post" enctype="multipart/form-data" name="upload_form">
+    <label>选择图片文件</label>
+   <input name="img1" type="file" multiple accept="image/png,image/jpeg,video/mp4,audio/mp3"/>
+    <input name="upload" type="submit" value="上传" />
+  </form>
 </body>
 </html>

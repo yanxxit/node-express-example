@@ -8,6 +8,9 @@ var CryptoUtil = require('../util/CryptoUtil');//加密
 var SpellGroupProxy = require('../proxy/SpellGroupProxy');//加密
 var config = require('../config');
 var ResKit = require('yanxxit-reskit');
+var dxlUpload = require("dxl-upload");
+var co = require("co")
+var path = require("path")
 var fs = require("fs");
 
 /**
@@ -16,23 +19,23 @@ var fs = require("fs");
  * @param res
  */
 exports.index = function (req, res) {
-    var params = ResKit.params(200, {name: 'admin', age: '13', pwd: '123'}, '提示信息')
+    var params = ResKit.params(200, { name: 'admin', age: '13', pwd: '123' }, '提示信息')
     console.log(JSON.stringify(params));
     var openid = 'oKXUCj1MOddnp-sCpGi1J1dg3TyM';
     console.log('进入首页');
-    res.render('home', {title: 'Hello mohoo!'});
+    res.render('home', { title: 'Hello mohoo!' });
 };
 
 exports.socket = function (req, res) {
     var openid = 'oKXUCj1MOddnp-sCpGi1J1dg3TyM';
     console.log('进入首页');
-    res.render('socket/index', {title: 'Hello mohoo!'});
+    res.render('socket/index', { title: 'Hello mohoo!' });
 };
 
 exports.play = function (req, res) {
     var cookie = req.signedCookies[config.cookie_name]
     console.log(cookie)
-    res.render('socket/play', {title: 'websocket', cookie: cookie});
+    res.render('socket/play', { title: 'websocket', cookie: cookie });
 };
 
 exports.dxzq = function (req, res) {
@@ -83,7 +86,29 @@ exports.page = function (req, res) {
 };
 
 exports.uploadHome = function (req, res) {
-    res.render('upload', {title: 'Hello mohoo!'});
+    res.render('upload', { title: 'Hello mohoo!' });
+};
+
+exports.base64 = function (req, res) {
+    res.render('base64', { title: 'Hello mohoo!' });
+};
+
+exports.base64Down = function (req, res) {
+    var imgData = req.body.imgUrl;
+    // console.log(imgData)
+    //过滤data:URL
+    var base64Data = imgData.replace(/^data:image\/\w+;base64,/, "");
+    var dataBuffer = new Buffer(base64Data, 'base64');
+    var base = "http://127.0.0.1:8600/express/upload/new/";
+    let name = (new Date().getTime()) + ".jpg"
+    let dist = path.join(__dirname, "../upload/new/"+name)
+    fs.writeFile(dist, dataBuffer, function (err) {
+        if (err) {
+            res.json(ResKit.params(0, err));
+        } else {
+            res.json(ResKit.params(0, base+name));
+        }
+    });
 };
 
 exports.upload = function (req, res) {
@@ -101,5 +126,29 @@ exports.upload = function (req, res) {
                 res.json(ResKit.params(200, imgurl));
             }
         });
+    });
+};
+
+//使用postman 测试图片上传
+exports.upload2 = function (req, res) {
+    co(function* () {
+        var des_file = "/Users/yanxiaoxiao/data/open/node-express-example/upload/"
+        let img = new dxlUpload({
+            root: des_file,
+            path: "img",
+            name: "img1"//对应着前端的字段 <input name="img1" type="file" multiple accept="image/png,image/jpeg,video/mp4,audio/mp3"/>
+        });
+        img.upload(req).then(imgUrl => {
+            console.log(imgUrl);
+            return res.json(imgUrl)
+            return res.json({ status: 0, data: imgUrl })
+            // return res.redirect(imgUrl)
+        }).catch(e => {
+            console.log(e)
+            return res.json({ status: 0, data: "上传失败" })
+        })
+    }).catch(e => {
+        console.log(e)
+        return res.json({ status: 0, data: "上传失败" })
     });
 };
