@@ -1,0 +1,17 @@
+{
+    "apps": [
+        {
+            "name": "express-example",
+            "script": "./index.js",
+            "exec_mode": "fork",
+            "log_date_format":"YYYY-MM-DD HH:mm:ss",
+            "watch": ".",
+            "ignore_watch": "node_modules",
+            "env": {
+                "NODE_ENV": "development",
+                "ENABLE_NODE_LOG": "YES",
+                "DEBUG": "dudu.*"
+            }
+        }
+    ]
+}

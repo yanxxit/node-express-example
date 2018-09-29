@@ -1,17 +1,3 @@
-var logger = require('../util/log4jsUtil');
-var apis = require('../apis');
-var _ = require("underscore")._;
-var EventProxy = require('eventproxy');
-var moment = require('moment');
-var utility = require('utility');
-var CryptoUtil = require('../util/CryptoUtil');//加密
-var SpellGroupProxy = require('../proxy/SpellGroupProxy');//加密
-var config = require('../config');
-var ResKit = require('yanxxit-reskit');
-var dxlUpload = require("dxl-upload");
-var co = require("co")
-var path = require("path")
-var fs = require("fs");
 var p = console;
 
 var redis = require('ioredis');

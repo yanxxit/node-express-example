@@ -1,5 +1,4 @@
 var mysql = require('mysql');
-var EventProxy = require('eventproxy');
 var moment = require('moment');
 
 //创建连接

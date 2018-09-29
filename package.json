@@ -4,8 +4,7 @@
   "description": "node-express-example",
   "main": "index.js",
   "scripts": {
-    "server": "node index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "pm2 startOrRestart ./ecosystem.dev.json && pm2 logs express-example"
   },
   "repository": {
     "type": "git",
@@ -24,7 +23,6 @@
     "dxl-upload": "^1.0.1",
     "ejs": "^2.5.5",
     "errorhandler": "^1.4.2",
-    "eventproxy": "*",
     "express": "^4.13.3",
     "express-session": "^1.11.3",
     "ioredis": "*",

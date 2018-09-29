@@ -1,8 +1,4 @@
 var WechatUserInfoRest = {};
-var logger = require('../util/log4jsUtil');
-var _ = require("underscore")._;
-var EventProxy = require('eventproxy');
-var moment = require('moment');
 var WechatUserInfoProxy = require('../proxy/WechatUserInfoProxy');
 
 /**
