@@ -22,6 +22,11 @@ exports.index = function (req, res) {
     res.render('home', { title: 'Hello mohoo!' });
 };
 
+exports.get = function (req, res) {
+    var params = ResKit.params(200, req.query, '提示信息')
+    res.json(params);
+};
+
 exports.socket = function (req, res) {
     var openid = 'oKXUCj1MOddnp-sCpGi1J1dg3TyM';
     console.log('进入首页');
@@ -97,12 +102,12 @@ exports.base64Down = function (req, res) {
     var dataBuffer = new Buffer(base64Data, 'base64');
     var base = "http://127.0.0.1:8600/express/upload/new/";
     let name = (new Date().getTime()) + ".jpg"
-    let dist = path.join(__dirname, "../upload/new/"+name)
+    let dist = path.join(__dirname, "../upload/new/" + name)
     fs.writeFile(dist, dataBuffer, function (err) {
         if (err) {
             res.json(ResKit.params(0, err));
         } else {
-            res.json(ResKit.params(0, base+name));
+            res.json(ResKit.params(0, base + name));
         }
     });
 };
