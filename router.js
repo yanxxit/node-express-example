@@ -6,6 +6,7 @@ var auth = require('./middlewares/auth');
 
 
 router.get('/express/index', home.index);//进入首页,auth.authWxUser
+router.get('/express/get', home.get);//进入首页,auth.authWxUser
 router.get('/express/redis/login', redis.login);
 router.get('/express/redis/main', redis.main);
 router.get('/express/redis/keys', redis.keys);
