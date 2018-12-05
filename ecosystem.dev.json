@@ -4,7 +4,8 @@
             "name": "express-example",
             "script": "./index.js",
             "exec_mode": "fork",
-            "log_date_format":"YYYY-MM-DD HH:mm:ss",
+            "log_date_format": "YYYY-MM-DD HH:mm:ss",
+            "max_restarts": 10,
             "env": {
                 "NODE_ENV": "development",
                 "NODE_LOG_DIR": "/tmp",
