@@ -28,9 +28,9 @@ app.use(bodyParser.json());//body-parser 解析json格式数据 {"data":{"name":
 app.use(bodyParser.urlencoded({extended: true}));//必须的 //此项必须在 bodyParser.json 下面,为参数编码
 app.use(require('method-override')());//methodOverride中间件必须结合bodyParser中间件一起使用,为bodyParser中间件提供伪HTTP方法支持.
 app.use(require('cookie-parser')(config.session_secret));//处理每一个请求的cookie。 通过req.cookies可以取到传过来的cookie，并把它们转成对象。
-app.use(multer({
-    dest: '/tmp/'
-}).array('image'));
+// app.use(multer({
+//     dest: '/tmp/'
+// }).array('image'));
 
 app.use(session({
     secret: config.session_secret,

@@ -113,7 +113,7 @@ exports.base64Down = function (req, res) {
 };
 
 exports.upload = function (req, res) {
-    console.log(req.files[0]); // 上传的文件信息
+    console.log(req.files); // 上传的文件信息
 
     var des_file = "upload/" + req.files[0].originalname;
     console.log(des_file)
@@ -133,17 +133,15 @@ exports.upload = function (req, res) {
 //使用postman 测试图片上传
 exports.upload2 = function (req, res) {
     co(function* () {
-        var des_file = "/Users/yanxiaoxiao/data/open/node-express-example/upload/"
+        var des_file = path.join(__dirname, '../public/')
         let img = new dxlUpload({
             root: des_file,
-            path: "img",
-            name: "img1"//对应着前端的字段 <input name="img1" type="file" multiple accept="image/png,image/jpeg,video/mp4,audio/mp3"/>
+            path: "upload",
+            name: "file"//对应着前端的字段 <input name="img1" type="file" multiple accept="image/png,image/jpeg,video/mp4,audio/mp3"/>
         });
         img.upload(req).then(imgUrl => {
             console.log(imgUrl);
-            return res.json(imgUrl)
             return res.json({ status: 0, data: imgUrl })
-            // return res.redirect(imgUrl)
         }).catch(e => {
             console.log(e)
             return res.json({ status: 0, data: "上传失败" })
