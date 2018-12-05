@@ -141,7 +141,7 @@ exports.upload2 = function (req, res) {
         });
         img.upload(req).then(imgUrl => {
             console.log(imgUrl);
-            return res.json({ status: 0, data: imgUrl })
+            return res.json({ status: 0, data: 'http://wx.yxxit.com/express/public/' + imgUrl })
         }).catch(e => {
             console.log(e)
             return res.json({ status: 0, data: "上传失败" })
