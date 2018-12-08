@@ -37,7 +37,12 @@ cnpm install --dev
 gulp test
 ```
 
-### 开发
+### docker
+
+```sh
+docker build .
+docker run -d -p 8600:8600 831cb570e9aa
+```
 
 ### 目录结构
 <pre>
