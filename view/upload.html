@@ -30,6 +30,7 @@
                 <input type="file" name="file" id="selectFile">
             </a>
             <span id="fileNameOrFileFormat">支持文件格式：txt，xls，csv</span>
+            <input type="hidden" name="token" value="bCtYfKSOQW68Vdn0_Mar2z_Bwf2S-2zwurDrfHCR:oLy6810msYm-eX4sGdPSNJD9iXk=:eyJmc2l6ZUxpbWl0IjoxMDQ4NTc2MDAsImNhbGxiYWNrQm9keVR5cGUiOiJhcHBsaWNhdGlvbi94LXd3dy1mb3JtLXVybGVuY29kZWQiLCJjYWxsYmFja0JvZHkiOiJidWNrZXQ9JChidWNrZXQpJmtleT0kKGtleSkmZXRhZz0kKGV0YWcpJmZuYW1lPSQoZm5hbWUpJmZzaXplPSQoZnNpemUpJm1pbWVfdHlwZT0kKG1pbWVUeXBlKSZlbmRfdXNlcj0kKGVuZFVzZXIpJmltYWdlX2luZm89JChpbWFnZUluZm8pJmF2aW5mbz0kKGF2aW5mbykmZXh0PSQoZXh0KSZ1dWlkPSQodXVpZCkmYmFzZT0kKHg6YmFzZSkiLCJjYWxsYmFja0hvc3QiOiJkZXYuZHUtbmFuZy5jb20iLCJjYWxsYmFja1VybCI6Imh0dHA6Ly9kZXYuZHUtbmFuZy5jb20vM3JkL3Fpbml1L2NhbGxiYWNrIiwic2F2ZUtleSI6Im1hcmtkb3duLyQoeWVhcikkKG1vbikvJChldGFnKSQoZXh0KSIsImluc2VydE9ubHkiOjEsInNjb3BlIjoiZHVkdS1kZXYiLCJkZWFkbGluZSI6MTU2ODI3NTEyOH0=">
         </div>
         <input type='button' id="upLoad" class="btn customButton" value='上传' name="上传" />
     </form>
@@ -39,13 +40,13 @@
 </html>
 <script>
     $(function () {
-        var activity_id = sessionStorage.getItem('activity_id');
 
         // 点击上传按钮
         $('#upLoad').click(function () {
             $('#addForm').ajaxSubmit({
                 forceSync: false,
-                url: "/express/upload2",
+                // url: "/express/upload2",
+                url: "http://upload.qiniu.com/",
                 type: 'post',
                 dataType: 'json',
                 success: function (response) {
@@ -58,32 +59,31 @@
         });
 
         // 当type=file的input的value改变时触发下面函数
-        $("#selectFile").on("change", function () {
-            // var filePath = $(this).val();         //获取到input的value，里面是文件的路径
-            var file = document.getElementById('selectFile').files;    //获取上传的文件
-            var fileName = file[0].name;
-            var fileSize = (file[0].size / 1024).toFixed(2);
-            // 获取文件的格式为.txt、.xsl、.csv
-            var fileFormat = fileName.substring(fileName.lastIndexOf(".")).toLowerCase();
-            if (checkFileFormat(fileFormat) == false) {
-                console.log("上传的文件类型有误！");
-                return;
-            }
-            // 文件大小不超过200KB；
-            if (fileSize > 2000) {
-                console.log("上传的文件太大了！");
-                return;
-            }
+        // $("#selectFile").on("change", function () {
+        //     var file = document.getElementById('selectFile').files;    //获取上传的文件
+        //     var fileName = file[0].name;
+        //     var fileSize = (file[0].size / 1024).toFixed(2);
+        //     // 获取文件的格式为.txt、.xsl、.csv
+        //     var fileFormat = fileName.substring(fileName.lastIndexOf(".")).toLowerCase();
+        //     if (checkFileFormat(fileFormat) == false) {
+        //         console.log("上传的文件类型有误！");
+        //         return;
+        //     }
+        //     // 文件大小不超过200KB；
+        //     if (fileSize > 2000) {
+        //         console.log("上传的文件太大了！");
+        //         return;
+        //     }
 
-        });
+        // });
 
-        // 校验文件格式
-        function checkFileFormat(format) {
-            if (format.match(/.txt|.xls|.csv|.jpg|.png/)) {
-                return true;
-            }
-            return false;
-        }
+        // // 校验文件格式
+        // function checkFileFormat(format) {
+        //     if (format.match(/.txt|.xls|.csv|.jpg|.png/)) {
+        //         return true;
+        //     }
+        //     return false;
+        // }
     });
 
 </script>
