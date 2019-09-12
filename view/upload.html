@@ -1,22 +1,89 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <title>文件上传表单</title>
+    <script src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdn.staticfile.org/jquery.form/4.2.2/jquery.form.min.js"></script>
 </head>
-<body>
-<h3>文件上传：</h3>
-选择一个文件上传: <br/>
-<form action="/express/upload" method="post" enctype="multipart/form-data">
-    <input type="file" name="image" size="50"/>
-    <br/>
-    <input type="submit" value="上传文件"/>
-</form>
 
-<form action="/express/upload2" method="post" enctype="multipart/form-data" name="upload_form">
-    <label>选择图片文件</label>
-   <input name="file" type="file" multiple accept="image/png,image/jpeg,video/mp4,audio/mp3"/>
-    <input name="upload" type="submit" value="上传" />
-  </form>
+<body>
+    <h3>文件上传：</h3>
+    选择一个文件上传: <br />
+    <form action="/express/upload" method="post" enctype="multipart/form-data">
+        <input type="file" name="image" size="50" />
+        <br />
+        <input type="submit" value="上传文件" />
+    </form>
+
+    <form action="/express/upload2" method="post" enctype="multipart/form-data" name="upload_form">
+        <label>选择图片文件</label>
+        <input name="file" type="file" multiple accept="image/png,image/jpeg,video/mp4,audio/mp3" />
+        <input name="upload" type="submit" id="myForm" value="上传" />
+    </form>
+
+    <form enctype="multipart/form-data" method="post" id='addForm'>
+        <div id="filePanel">
+            <a class="selectFileDiv" href="javascript:;">
+                选择文件
+                <input type="file" name="file" id="selectFile">
+            </a>
+            <span id="fileNameOrFileFormat">支持文件格式：txt，xls，csv</span>
+        </div>
+        <input type='button' id="upLoad" class="btn customButton" value='上传' name="上传" />
+    </form>
+
 </body>
+
 </html>
+<script>
+    $(function () {
+        var activity_id = sessionStorage.getItem('activity_id');
+
+        // 点击上传按钮
+        $('#upLoad').click(function () {
+            $('#addForm').ajaxSubmit({
+                forceSync: false,
+                url: "/express/upload2",
+                type: 'post',
+                dataType: 'json',
+                success: function (response) {
+                    console.log('success');
+                },
+                error: function (response) {
+                    console.log('error');
+                }
+            });
+        });
+
+        // 当type=file的input的value改变时触发下面函数
+        $("#selectFile").on("change", function () {
+            // var filePath = $(this).val();         //获取到input的value，里面是文件的路径
+            var file = document.getElementById('selectFile').files;    //获取上传的文件
+            var fileName = file[0].name;
+            var fileSize = (file[0].size / 1024).toFixed(2);
+            // 获取文件的格式为.txt、.xsl、.csv
+            var fileFormat = fileName.substring(fileName.lastIndexOf(".")).toLowerCase();
+            if (checkFileFormat(fileFormat) == false) {
+                console.log("上传的文件类型有误！");
+                return;
+            }
+            // 文件大小不超过200KB；
+            if (fileSize > 2000) {
+                console.log("上传的文件太大了！");
+                return;
+            }
+
+        });
+
+        // 校验文件格式
+        function checkFileFormat(format) {
+            if (format.match(/.txt|.xls|.csv|.jpg|.png/)) {
+                return true;
+            }
+            return false;
+        }
+    });
+
+</script>
