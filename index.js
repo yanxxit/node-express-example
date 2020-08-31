@@ -11,7 +11,7 @@ var MongoStore = require('connect-mongo')(session);
 var _ = require("underscore")._;
 var ejs = require('ejs');
 var multer = require('multer');
-
+var jwt = require('express-jwt');
 var app = express();
 
 app.set('views', path.join(__dirname, 'view'));//设置视图页面显示目录
@@ -20,12 +20,12 @@ app.engine('html', ejs.__express);
 app.set('view engine', 'html');
 app.set('x-powered-by', false);
 
-app.use('/' + config.app + '/public', express.static(path.join(__dirname, 'public'), {maxAge: '3d'}));//设置静态文件目录
-app.use('/' + config.app + '/upload', express.static(path.join(__dirname, 'upload'), {maxAge: '3d'}));//设置静态文件目录
+app.use('/' + config.app + '/public', express.static(path.join(__dirname, 'public'), { maxAge: '3d' }));//设置静态文件目录
+app.use('/' + config.app + '/upload', express.static(path.join(__dirname, 'upload'), { maxAge: '3d' }));//设置静态文件目录
 app.use(require('response-time')());//显示请求运行时间
 app.use(compression());//动态文件的gzip压缩
 app.use(bodyParser.json());//body-parser 解析json格式数据 {"data":{"name":"张三","age":25}}  req.body.data.name (获取到张三)
-app.use(bodyParser.urlencoded({extended: true}));//必须的 //此项必须在 bodyParser.json 下面,为参数编码
+app.use(bodyParser.urlencoded({ extended: true }));//必须的 //此项必须在 bodyParser.json 下面,为参数编码
 app.use(require('method-override')());//methodOverride中间件必须结合bodyParser中间件一起使用,为bodyParser中间件提供伪HTTP方法支持.
 app.use(require('cookie-parser')(config.session_secret));//处理每一个请求的cookie。 通过req.cookies可以取到传过来的cookie，并把它们转成对象。
 // app.use(multer({
@@ -40,7 +40,7 @@ app.use(session({
     //}),
     resave: true,
     saveUninitialized: true,
-    cookie: {maxAge: 100000 * 60 * 60, httpOnly: true}
+    cookie: { maxAge: 100000 * 60 * 60, httpOnly: true }
 }));
 
 app.locals.app = config.app;
@@ -59,9 +59,54 @@ app.use(function (req, res, next) {
     }
     next();
 });
+// app.get('/protected',
+//     jwt({ secret: 'shhhhhhared-secret', algorithms: ['HS256'], credentialsRequired: true }),
+//     function (req, res) {
+//         if (!req.user.admin) return res.sendStatus(401);
+//         res.sendStatus(200);
+//     });
 
+app.get('/protected',
+    jwt({ secret: 'tingo66.com', algorithms: ['HS256'] }),
+    function (req, res) {
+        if (!req.user.admin) return res.sendStatus(401);
+        res.sendStatus(200);
+    });
+
+// 不校验
+app.use(jwt({ secret: 'tingo66.com', algorithms: ['HS256'] }).unless({ path: ['/v3/jwt/token'] }));
+var isRevokedCallback = function (req, payload, done) {
+    var issuer = payload.iss;
+    var tokenId = payload.jti;
+
+    data.getRevokedToken(issuer, tokenId, function (err, token) {
+        if (err) { return done(err); }
+        return done(null, !!token);
+    });
+};
+
+// app.get('/protected',
+//     jwt({
+//         secret: 'tingo66.com',
+//         isRevoked: isRevokedCallback
+//     }),
+//     function (req, res) {
+//         if (!req.user.admin) return res.sendStatus(401);
+//         res.sendStatus(200);
+//     }
+// );
+
+
+
+require("./router_v3")(app)//进入路由
 app.use('/', webRouter);//进入路由
 
+
+app.use(function (err, req, res, next) {
+    if (err.name === 'UnauthorizedError') {
+        res.status(401).send('invalid token')
+    }
+})
 var server = app.listen(config.port, function () {
     logger.info('监听日志：' + config.port);
     logger.info("local: " + config.host + '/' + config.app + '/index');
