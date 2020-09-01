@@ -60,30 +60,33 @@ app.use(function (req, res, next) {
     next();
 });
 // app.get('/protected',
-//     jwt({ secret: 'shhhhhhared-secret', algorithms: ['HS256'], credentialsRequired: true }),
+//     jwt({ secret: 'tingo66.com', algorithms: ['HS256'], credentialsRequired: true }),
 //     function (req, res) {
 //         if (!req.user.admin) return res.sendStatus(401);
 //         res.sendStatus(200);
 //     });
 
-app.get('/protected',
-    jwt({ secret: 'tingo66.com', algorithms: ['HS256'] }),
-    function (req, res) {
-        if (!req.user.admin) return res.sendStatus(401);
-        res.sendStatus(200);
-    });
+
 
 // 不校验
 app.use(jwt({ secret: 'tingo66.com', algorithms: ['HS256'] }).unless({ path: ['/v3/jwt/token'] }));
-var isRevokedCallback = function (req, payload, done) {
-    var issuer = payload.iss;
-    var tokenId = payload.jti;
 
-    data.getRevokedToken(issuer, tokenId, function (err, token) {
-        if (err) { return done(err); }
-        return done(null, !!token);
+app.get('/protected',
+    jwt({ secret: 'tingo66.com', algorithms: ['HS256'], credentialsRequired: true }),
+    function (req, res) {
+        if (!req.user) return res.sendStatus(401);
+        res.sendStatus(200);
     });
-};
+
+// var isRevokedCallback = function (req, payload, done) {
+//     var issuer = payload.iss;
+//     var tokenId = payload.jti;
+
+//     data.getRevokedToken(issuer, tokenId, function (err, token) {
+//         if (err) { return done(err); }
+//         return done(null, !!token);
+//     });
+// };
 
 // app.get('/protected',
 //     jwt({
@@ -103,8 +106,9 @@ app.use('/', webRouter);//进入路由
 
 
 app.use(function (err, req, res, next) {
+    // 授权错误
     if (err.name === 'UnauthorizedError') {
-        res.status(401).send('invalid token')
+        res.status(200).json({ result: 1, error: 'invalid token', data: err });
     }
 })
 var server = app.listen(config.port, function () {
